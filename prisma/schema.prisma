@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Produto {
+  id             String           @id @default(cuid())
+  descricao      String
+  valor          Float
+  estoque        Int
+  createAt       DateTime         @default(now())
+  ProdutoPedido  ProdutoPedido[]
+  ProdutoEntrega ProdutoEntrega[]
+}
+
+model Cliente {
+  id                String  @id @default(cuid())
+  nomeRazao         String
+  fantasiaApelido   String?
+  cpfCnpj           String? @unique
+  rg                String? @unique
+  inscricaoEstadual String? @unique
+  dataNascimento    String?
+  sexo              String?
+  email             String? @unique
+
+  telefones Telefone[]
+  enderecos Endereco[]
+  Pedido    Pedido[]
+}
+
+model Endereco {
+  id          String  @id @default(cuid())
+  logradouro  String
+  numero      String?
+  complemento String?
+  bairro      String?
+  cidade      String?
+  estado      String?
+  cep         String?
+
+  clienteId String
+
+  cliente Cliente @relation(fields: [clienteId], references: [id])
+}
+
+model Telefone {
+  id     String @id @default(cuid())
+  numero String
+  tipo   String
+
+  clienteId String
+
+  cliente Cliente @relation(fields: [clienteId], references: [id])
+}
+
+model Pedido {
+  id          String   @id @default(cuid())
+  codPedido   String   @unique
+  valorTotal  Float
+  status      Int
+  dataPedido  DateTime @default(now())
+  dataEntrega DateTime
+
+  clienteId String
+
+  cliente        Cliente         @relation(fields: [clienteId], references: [id])
+  produtosPedido ProdutoPedido[]
+  entregas       Entrega[]
+}
+
+model Entrega {
+  id          String   @id @default(cuid())
+  pedidoId    String
+  dataEntrega DateTime
+
+  pedido         Pedido?          @relation(fields: [pedidoId], references: [id])
+  ProdutoEntrega ProdutoEntrega[]
+}
+
+model ProdutoEntrega {
+  id         String @id @default(cuid())
+  quantidade Int
+
+  produtoId String
+  entregaId String
+
+  produto Produto @relation(fields: [produtoId], references: [id])
+  entrega Entrega @relation(fields: [entregaId], references: [id])
+
+  @@unique([entregaId, produtoId])
+}
+
+model ProdutoPedido {
+  id         String @id @default(cuid())
+  quantidade Int
+  pedidoId   String
+  produtoId  String
+
+  produto Produto @relation(fields: [produtoId], references: [id])
+  pedido  Pedido  @relation(fields: [pedidoId], references: [id])
+
+  @@unique([pedidoId, produtoId])
+}
+
+model Usuario {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  senha     String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+}

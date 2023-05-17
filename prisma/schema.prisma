@@ -28,12 +28,12 @@ model Cliente {
   id                String  @id @default(cuid())
   nomeRazao         String
   fantasiaApelido   String?
-  cpfCnpj           String? @unique
-  rg                String? @unique
-  inscricaoEstadual String? @unique
+  cpfCnpj           String?
+  rg                String?
+  inscricaoEstadual String?
   dataNascimento    String?
   sexo              String?
-  email             String? @unique
+  email             String?
 
   telefones Telefone[]
   enderecos Endereco[]

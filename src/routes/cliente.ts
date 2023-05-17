@@ -66,21 +66,21 @@ export async function clienteRoutes(fastify: FastifyInstance) {
     fastify.post('/cliente', async (request, reply) => {
         const createClienteBody = z.object({
             nomeRazao: z.string(),
-            fantasiaApelido: z.string(),
-            cpfCnpj: z.string(),          
-            rg: z.string(),               
-            inscricaoEstadual: z.string(),
-            dataNascimento: z.string(),   
-            sexo: z.string(),             
-            email: z.string().email(),            
+            fantasiaApelido: z.string().nullable(),
+            cpfCnpj: z.string().nullable(),          
+            rg: z.string() .nullable(),               
+            inscricaoEstadual: z.string().nullable(),
+            dataNascimento: z.string().nullable(),   
+            sexo: z.string().nullable(),             
+            email: z.string().email().nullable(),            
             enderecos: z.array(z.object({
                 logradouro: z.string(),
-                numero: z.string(),
-                complemento: z.string(),
-                bairro: z.string(),
-                cidade: z.string(),
-                estado: z.string(),
-                cep: z.string(),
+                numero: z.string().nullable(),
+                complemento: z.string().nullable(),
+                bairro: z.string().nullable(),
+                cidade: z.string().nullable(),
+                estado: z.string().nullable(),
+                cep: z.string().nullable(),
             })),
             telefones: z.array(z.object({
                 numero: z.string(),
@@ -142,13 +142,13 @@ export async function clienteRoutes(fastify: FastifyInstance) {
         async (request, reply) => {
             const updateClienteBody = z.object({
                 nomeRazao: z.string(),
-                fantasiaApelido: z.string(),
-                cpfCnpj: z.string(),          
-                rg: z.string(),               
-                inscricaoEstadual: z.string(),
-                dataNascimento: z.string(),   
-                sexo: z.string(),             
-                email: z.string().email(),
+                fantasiaApelido: z.string().nullable(),
+                cpfCnpj: z.string().nullable(),          
+                rg: z.string().nullable(),               
+                inscricaoEstadual: z.string().nullable(),
+                dataNascimento: z.string().nullable(),   
+                sexo: z.string().nullable(),             
+                email: z.string().email().nullable(),
             })
             
             const updateClienteParams = z.object({
@@ -239,12 +239,12 @@ export async function clienteRoutes(fastify: FastifyInstance) {
         const createEnderecoBody = z.object({
             clienteId: z.string(),
             logradouro: z.string(),
-            numero: z.string(),
-            complemento: z.string(),
-            bairro: z.string(),
-            cidade: z.string(),
-            estado: z.string(),
-            cep: z.string(),
+            numero: z.string().nullable(),
+            complemento: z.string().nullable(),
+            bairro: z.string().nullable(),
+            cidade: z.string().nullable(),
+            estado: z.string().nullable(),
+            cep: z.string().nullable(),
         })
 
         const { 
@@ -295,12 +295,12 @@ export async function clienteRoutes(fastify: FastifyInstance) {
         async (request, reply) => {
             const updateEnderecoBody = z.object({
                 logradouro: z.string(),
-                numero: z.string(),
-                complemento: z.string(),
-                bairro: z.string(),
-                cidade: z.string(),
-                estado: z.string(),
-                cep: z.string(),
+                numero: z.string().nullable(),
+                complemento: z.string().nullable(),
+                bairro: z.string().nullable(),
+                cidade: z.string().nullable(),
+                estado: z.string().nullable(),
+                cep: z.string().nullable(),
             })
             
             const updateClienteParams = z.object({
